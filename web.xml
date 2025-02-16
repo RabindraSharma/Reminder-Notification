@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <context-param>
+        <!-- Added on 05.07.2021 -->
+        <description>Environment</description>
+        <param-name>Environment</param-name>
+        <param-value>DEVELOPER</param-value>
+    </context-param>
+    <context-param>
+        <description>Transline Technologies</description>
+        <param-name>cmpCD</param-name>
+        <param-value>TTPL</param-value>
+    </context-param>
+    
+    <context-param>
+        <description>Operation Excellence</description>
+        <param-name>opxlCmpCd</param-name>
+        <param-value>CO001</param-value>
+    </context-param>
+    
+    <!-- Added on 06.02.2026 by Rabindra Sharma -->
+    <context-param>
+        <description>Reminder Notification Hours</description>
+        <param-name>notifyHours</param-name>
+        <param-value>16</param-value>
+    </context-param>
+    
+    <context-param>
+        <description>Reminder Notification Minutes</description>
+        <param-name>notifyMinutes</param-name>
+        <param-value>44</param-value>
+    </context-param>
+    
+    <!--
+    <context-param>
+        <description>BABLE</description>
+        <param-name>cmpCD1</param-name>
+        <param-value>BABLE</param-value>
+    </context-param>
+    <context-param>
+        <description>ILFS</description>
+        <param-name>cmpCD2</param-name>
+        <param-value>ILFS</param-value>
+    </context-param>
+    <context-param>
+        <description>TTPLUID</description>
+        <param-name>cmpCD3</param-name>
+        <param-value>TTPLUID</param-value>
+    </context-param>
+    <context-param>
+        <description>RXIT</description>
+        <param-name>cmpCD4</param-name>
+        <param-value>RXIT</param-value>
+    </context-param>
+    <context-param>
+        <description>ICI</description>
+        <param-name>cmpCD5</param-name>
+        <param-value>ICI</param-value>
+    </context-param>
+    <context-param>
+        <description>Transline Technologies</description>
+        <param-name>cmpCD6</param-name>
+        <param-value>TTPLS</param-value>
+    </context-param>
+    -->
+    <!-- Added below appurl on 17.05.2018 -->
+    <context-param>
+        <description>Portal URL</description>
+        <param-name>appurl</param-name>
+        <param-value>http://localhost:8081/bioas/</param-value>
+    </context-param>
+    <context-param>
+        <description>mail server</description>
+        <param-name>smtphost</param-name>
+        <param-value>smtp.rediffmailpro.com</param-value>
+    </context-param>
+    <context-param>
+        <description>mail smtp port</description>
+        <param-name>port</param-name>
+        <param-value>587</param-value>
+    </context-param>
+    <context-param>
+        <description>email id</description>
+        <param-name>authuser</param-name>
+        <param-value>support@translineindia.com</param-value>
+    </context-param>
+    <context-param>
+        <description>password</description>
+        <param-name>authpass</param-name>
+        <param-value>Trans@2015</param-value>
+    </context-param>
+    <!-- Added below params on 14.02.2019 -->
+    <context-param>
+        <description>Data Fetching Start Time</description>
+        <param-name>start_lsip</param-name>
+        <param-value>01:30:00</param-value>
+    </context-param>
+    <context-param>
+        <description>Data Fetching Ending Time</description>
+        <param-name>end_lsip</param-name>
+        <param-value>14:30:00</param-value>
+    </context-param>
+    <context-param>
+        <description>Data Fetching interval in Hrs -- 0 to Stop</description>
+        <param-name>int_lsip</param-name>
+        <param-value>1</param-value>
+    </context-param>
+    <!-- Added above params on 14.02.2019 -->
+    <!-- Added below params on 14.04.2020 -->
+    <context-param>
+        <description>SMSesForMP Start Time</description>
+        <param-name>start_mpsmses</param-name>
+        <param-value>11:00:00</param-value>
+    </context-param>
+    <context-param>
+        <description>SMSesForMP Ending Time</description>
+        <param-name>end_mpsmses</param-name>
+        <param-value>20:00:00</param-value>
+    </context-param>
+    <context-param>
+        <description>SMSesForMP interval in Hrs -- 0 to Stop</description>
+        <param-name>int_mpsmses</param-name>
+        <param-value>2</param-value>
+    </context-param>
+    <!-- Added above params on 14.04.2020 -->
+    <!-- Added below params on 29.04.2020 -->
+    <context-param>
+        <description>Enquiry Form -- To Email IDs</description>
+        <param-name>enqf_to_emids</param-name>
+        <param-value>ramnath@translineindia.com</param-value>
+    </context-param>
+    <context-param>
+        <description>Enquiry Form -- Main User</description>
+        <param-name>enqf_mu</param-name>
+        <param-value>CO001:CO001:CO001N</param-value>
+    </context-param>
+    <context-param>
+        <description>Data Fetching Enrollment Start Time</description>
+        <param-name>start_enrollment_initial_delay</param-name>
+        <param-value>0</param-value>
+    </context-param>
+    <context-param>
+        <description>Data Fetching Enrollment Start Time</description>
+        <param-name>start_enrollment_period</param-name>
+        <param-value>1800</param-value>
+    </context-param>
+    <!-- Added above params on 29.04.2020 -->
+    <!--listener>
+        <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>WS_GPS_Attendance</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>WSForAttendance</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WS_GPS_Attendance</servlet-name>
+        <url-pattern>/WS_GPS_Attendance</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WSForAttendance</servlet-name>
+        <url-pattern>/WSForAttendance</url-pattern>
+    </servlet-mapping-->
+    <listener>
+        <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>TestWS</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>INVAPPUser</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>ETWebServiceOld</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>NFWebService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>WSForAttendance</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>VLWebService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>ETWebService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>IDSurvWebService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>OpExcelWebService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>WS_GPS_AttendanceOld</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>WS_GPS_Attendance</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TestWS</servlet-name>
+        <url-pattern>/TestWS</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>INVAPPUser</servlet-name>
+        <url-pattern>/INVAPPUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ETWebServiceOld</servlet-name>
+        <url-pattern>/ETWebServiceOld</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NFWebService</servlet-name>
+        <url-pattern>/NFWebService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WSForAttendance</servlet-name>
+        <url-pattern>/WSForAttendance</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VLWebService</servlet-name>
+        <url-pattern>/VLWebService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ETWebService</servlet-name>
+        <url-pattern>/ETWebService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IDSurvWebService</servlet-name>
+        <url-pattern>/IDSurvWebService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OpExcelWebService</servlet-name>
+        <url-pattern>/OpExcelWebService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WS_GPS_AttendanceOld</servlet-name>
+        <url-pattern>/WS_GPS_AttendanceOld</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WS_GPS_Attendance</servlet-name>
+        <url-pattern>/WS_GPS_Attendance</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
+<!--filter>
+   <filter-name>LoginFilter</filter-name>
+   <filter-class>LoginFilter</filter-class>
+   <init-param>
+	  <param-name>test-param</param-name>
+	  <param-value>Initialization Paramter</param-value>
+   </init-param>
+</filter>
+
+
+<filter>
+   <filter-name>LoginFilter_1</filter-name>
+   <filter-class>LoginFilter_1</filter-class>
+   <init-param>
+	  <param-name>test-param</param-name>
+	  <param-value>Initialization Paramter</param-value>
+   </init-param>
+</filter>
+
+<filter-mapping>
+   <filter-name>LoginFilter</filter-name>
+   <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+<filter-mapping>
+   <filter-name>LoginFilter_1</filter-name>
+   <url-pattern>/*</url-pattern>
+</filter-mapping-->

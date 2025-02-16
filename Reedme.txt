@@ -1,0 +1,220 @@
+
+---------------------------Reminder Notification Module implemented on 04.02.2025-----------------------
+========================================================================================================
+1. Addition in crmhead.jsp for Reminder Management added links below:
+	-> crmhead.jsp is available in WEB-INF/includes
+	-> <%-- Added by Rabindra Sharma on 25-01-2025 for Reminder Notification --%>
+	-> Added line 341 to 363
+	
+                          <li class="nav-item dropdown" style="<%= mngMod %>">
+                            <a href="#" class="nav-link sidebar-link text-white  mb-2 dropdown-toggle mainNavLink" data-toggle="collapse" data-target='#RemdNotify'>
+                                <i class="fa fa-bell text-light fa-lg mr-3"></i>Reminder Notification</a>                               
+                            <ul class="list-unstyled collapse " id="RemdNotify">
+                                <li class="nav-item ml-5 py-1">
+                                    <a href="<%=context%>/Crm.do?operation=reminderEntry"  class=" sidebar-link  mb-2">
+                                        <i class="fa fa-chevron-right  fa-sm mr-2"></i>
+                                        New Reminder
+                                    </a>
+                                </li>                               
+                                <li class="nav-item ml-5 py-1">
+                                    <a href="<%=context%>/Crm.do?operation=remReports"  class=" sidebar-link  mb-2">
+                                        <i class="fa fa-chevron-right  fa-sm mr-2"></i>
+                                        Reminder Reports
+                                    </a>
+                                </li>                               
+                            </ul>
+                         </li>
+                         
+                         
+                        
+                        <!-- Added by Rabindra Sharma on 07-04-2023 -->
+	-----------------------------------------------------------------------------------------------------------------
+2. Addition in /jsp/crm/entries/reminder-entry.jsp file for reminder creation.
+3. Addition in /jsp/crm/reports/reminder-reports.jsp file for reminder reports and time elapsed or remaining dates time shown.
+4. Addition in /bioas/ for reminder notification for scheduler 
+	-> Added - NotificationSchedulerManager.java
+	-> Added - ServletContextListenerForAttRep.java in this class has some peace of code added
+		-// Added below scheduler for notification of task on 29.01.2025 by Rabindra Sharma        
+        NotificationSchedulerManager notifyManager = new NotificationSchedulerManager(context);     
+        notifyManager.startSchedulerUpdate();
+		
+5.  Addition in /java/crm/ui/CrmRequestProccessor.java file
+	-> Added some endpoints and url page 
+	- Added some line no : 370 to 377 
+    // Added below 2 line on 25.01.2025 for Reminder notification 
+    // Added by Rabindra Sharma
+    public static final String REQ_FOR_REMINDER_ENTRY = "reminderEntry";
+    public static final String GET_REMINDER_ENTRY_URL = "/jsp/crm/entries/reminder-entry.jsp";
+    
+    // Added below 2 endpoints for remainder reports on 27.01.2025 by Rabindra Sharma
+    public static final String REQ_FOR_REMINDER_REPORT = "remReports";
+    public static final String GET_REMAINDER_REPORT_URL = "/jsp/crm/reports/reminder-reports.jsp";
+	
+	-----------------------------------------------------------------------------------------------
+	-> Added some case in /java/crm/ui/CrmRequestProccessor.java
+	- Added line no : 1517 to 1522
+		case REQ_FOR_REMINDER_ENTRY:               
+			logger.info("we reached to creating reminder notification page");                        
+			forwardUrl = GET_REMINDER_ENTRY_URL;
+		break;
+		
+	-----------------------------------------------------------------------------------------------
+	-> Added again 1 case in /java/crm/ui/CrmRequestProccessor.java file
+	- Added line no : 1523 to 1527
+		case REQ_FOR_REMINDER_REPORT:
+			request.setAttribute("remReports", Reminder.getReminderDtls(cmpMst.getCmpCd(), usrDetails.getUloginId(), strOffCd));
+			logger.info("we reached to reminder reports page");                                               
+			forwardUrl = GET_REMAINDER_REPORT_URL;
+		break;
+	-----------------------------------------------------------------------------------------------------
+6.  Addition in /java/bioas/util/NotificationScheduler.java file
+	-----------------------------------------------------------------------------------------------------
+7.  Addition in /java/crm/ui/CrmAsyncReqProccessor.java file
+	-> Added line no : 287
+	 private static final String INS_REMINDER = "insRemainder"; // Added on 25.01.2025 by Rabindra Sharma     
+	----------------------------------------------------------------------------------------------------- 
+	-> Added 1 case for /java/crm/ui/CrmAsyncReqProccessor.java file 
+	- Added line no : 5221 to 5270
+		case INS_REMINDER:
+                logger.info("we reach to insert/update reminder");
+                    String isUpdate = (String) request.getParameter("isUpdate");
+                    isUpdate = (isUpdate == null) ? "" : isUpdate;
+                    hmData = new HashMap();                                        
+                    int itemCount = 0;
+                    ArrayList dtlsList = new ArrayList();  
+                    // for reminder updation 
+                    if(isUpdate.equalsIgnoreCase("Y")){                        
+                        hmData.put("curDuesDate", (String) request.getParameter("cDuesDate"));
+                        hmData.put("nextDuesDate", (String) request.getParameter("nextDuesDate"));
+                        hmData.put("deptId", (String) request.getParameter("deptId"));
+                        hmData.put("notifyTitle", (String) request.getParameter("notifyTitle"));
+                        hmData.put("notifyId", (String) request.getParameter("notifyId"));
+						hmData.put("ticketUpdate", (String) request.getParameter("tktUpdCls"));
+                        hmData.put("updRemaks", (String) request.getParameter("updRemaks"));
+						
+                    }else{
+                        hmData.put("remTitle", (String) request.getParameter("remForName"));
+                        hmData.put("remDesc", (String) request.getParameter("remForDesc"));                   
+                        hmData.put("remFrom", (String) request.getParameter("remFrom"));
+                        hmData.put("remTo", (String) request.getParameter("remTo"));
+                        hmData.put("notifyDept", (String) request.getParameter("notifyDept")); 
+                        itemCount = Integer.parseInt((String) request.getParameter("remCount"));
+                        
+                        for(int iIndex = 0; iIndex <= itemCount; iIndex++){
+                            HashMap remDtls = new HashMap();
+                            if(iIndex==0){
+                                remDtls.put("personName", (String) request.getParameter("personName"));
+                                remDtls.put("personEmail", (String) request.getParameter("personEmail"));
+                            }else{
+                                remDtls.put("personName"+iIndex, (String) request.getParameter("personName"+iIndex));
+                                remDtls.put("personEmail"+iIndex, (String) request.getParameter("personEmail"+iIndex));
+                            }
+    //                        remDtls.put("notifyDept"+iIndex, (String) request.getParameter("notifyDept"+iIndex));  
+                            dtlsList.add(remDtls);
+                        }
+                        hmData.put("remDtls",dtlsList);
+                    }
+                    
+                    String strStatus = Reminder.insReminder(strCmpCd,strOffCd,strLoginId, hmData, isUpdate);                    
+                    json.put("Result", strStatus);
+                    pw.print(json);
+                    break;
+            }
+          }
+        } catch (IOException ex) {
+            logger.error(ex);
+        }
+
+    }
+	---------------------------------------------------------------------------------------------------------------
+8.  Addition in /java/crm/db/Reminder.java file // In this class has all functionality has been implemented.
+	---------------------------------------------------------------------------------------------------------------
+9.  Addition all Renimder notification module required table structures are as shown below:
+	---> TABLE REMAINDER_NOTIFY_MST
+	----------- Table createion structure  -------------------
+	CREATE TABLE [dbo].[REMAINDER_NOTIFY_MST](
+		[CMP_CD] [varchar](10) NOT NULL,
+		[ULOGIN_ID] [varchar](20) NOT NULL,
+		[OFF_CD] [varchar](20) NOT NULL,
+		[REM_ID] [bigint] IDENTITY(1,1) NOT NULL,
+		[REM_TITLE] [varchar](100) NOT NULL,
+		[REM_DESC] [varchar](250) NOT NULL,
+		[SYS_DATE] [DATETIME] DEFAULT GETDATE() NOT NULL,
+		[REM_EXPIRY] [datetime] NOT NULL,
+		[UPDATED_ON] [datetime] NULL,
+		[IS_STATUS] [varchar](1) NULL,
+		PRIMARY KEY CLUSTERED([CMP_CD],[REM_TITLE])
+	)
+	-----------------------------------------------------------
+	---> TABLE REMD_NOTIFY_DTLS
+	----------- Table createion structure ---------------------
+	CREATE TABLE [dbo].[REMD_NOTIFY_DTLS](
+		[CMP_CD] [varchar](10) NOT NULL,
+		[ULOGIN_ID] [varchar](20) NOT NULL,
+		[OFF_CD] [varchar](20) NOT NULL,
+		[ID] [bigint] IDENTITY(10001,1) NOT NULL,
+		[REM_ID] [bigint] NOT NULL,
+		[NOTIFY_PERSON_NAME] [varchar](50) NOT NULL,
+		[NOTIFY_EMAIL] [varchar](30) NOT NULL,
+		[SYS_DATETIME] [datetime] DEFAULT GETDATE() NOT NULL,
+		PRIMARY KEY CLUSTERED([CMP_CD],[REM_ID],[NOTIFY_PERSON_NAME]
+	);
+	-----------------------------------------------------------
+	---> TABLE NOTIFICATIONS
+	-------------- Table createion structure ------------------
+	CREATE TABLE [dbo].[NOTIFICATIONS](
+		[CMP_CD] [varchar](10) NOT NULL,
+		[ULOGIN_ID] [varchar](30) NULL,
+		[OFF_CD] [varchar](30) NULL,
+		[NOTIFICATION_ID] [bigint] IDENTITY(1000001,1) NOT NULL,
+		[REM_ID] [int] NULL,
+		[REM_TITLE] [varchar](50) NULL,
+		[SENT_DATE] [DATETIME] DEFAULT GETDATE() NOT NULL,
+		[MESSAGE] [nvarchar](500) NOT NULL,
+		PRIMARY KEY CLUSTERED([CMP_CD],[SENT_DATE]
+	);
+	----------------------------------------------------------
+	---> TABLE REMD_LOGS
+	--------------- Table createion structure ----------------
+	CREATE TABLE [dbo].[REMD_LOGS](
+		[CMP_CD] [varchar](10) NOT NULL,
+		[ULOGIN_ID] [varchar](30) NOT NULL,
+		[OFF_CD] [varchar](30) NOT NULL,
+		[LOG_ID] [bigint] IDENTITY(100001,1) NOT NULL,
+		[REMD_ID] [bigint] NOT NULL,
+		[NOTIFY_TITLE] [varchar](50) NOT NULL,
+		[CURRENT_DUE_DATE] [datetime] NULL,
+		[NEXT_DUE_DATE] [datetime] NULL,
+		[REMARKS] [varchar](250) NULL,
+		[CREATED_BY] [varchar](30) NULL,
+		[UPDATED_BY] [varchar](30) NULL
+	);
+	------------------------------------------------------------------------------------
+10. Addition in web.xml file for setting default scheduler notifyHours, notifyMinutes and CmpCd
+	
+	<context-param>
+        <description>Operation Excellence</description>
+        <param-name>opxlCmpCd</param-name>
+        <param-value>CO001</param-value>
+    </context-param>
+    
+    <!-- Added on 06.02.2026 by Rabindra Sharma -->
+    <context-param>
+        <description>Reminder Notification Hours</description>
+        <param-name>notifyHours</param-name>
+        <param-value>11</param-value>
+    </context-param>
+    
+    <context-param>
+        <description>Reminder Notification Minutes</description>
+        <param-name>notifyMinutes</param-name>
+        <param-value>0</param-value>
+    </context-param>
+		
+	------------------------------------------------------- The end---------------------------------------------
+
+	
+	
+
+	
+	
